@@ -13,6 +13,6 @@ class Card {
     CardValue cardValue;
 
     String toString(){
-        cardValue.name + " of " + suit.name
+        cardValue.name + "-" + suit.name
     }
 }
