@@ -2,7 +2,6 @@ package main.poker.player
 
 import main.poker.card.Card
 import main.poker.util.HandDetector
-import main.poker.util.CardUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +24,8 @@ class Player {
     def addGameCards(List <Card> cards){
         wholeHand.addAll(cards)
 
-        // SORTING CARDS HERE???
-        CardUtil.sortCards(wholeHand)
+        // SORTING CARDS HERE - not needed. Should show by default in order dealt
+        //PokerUtil.sortCards(wholeHand)
     }
 
     def detectHand(){

@@ -32,12 +32,17 @@ class Game {
         getFlop()
 
         //Add game cards to player hand
-        player.addGameCards(gameCards)
+        player.addGameCards(gameCards[0..2])
 
         println "MAIN: Player whole-hand: " + player.wholeHand
 
-        player.detectHand()
+        getRiver()
+        getFinal()
+        player.addGameCards(gameCards[3..4])
+        println "MAIN: Player whole-hand after final 2 cards: " + player.wholeHand
 
+        //Detect hand...
+        player.detectHand()
         println "MAIN: Player hand-results:" + player.handResults
 
     }
@@ -48,5 +53,13 @@ class Game {
      */
     def getFlop(){
         gameCards.addAll(deck.dealFlop())
+    }
+
+    def getRiver(){
+        gameCards.add(deck.dealCard())
+    }
+
+    def getFinal(){
+        gameCards.add(deck.dealCard())
     }
 }

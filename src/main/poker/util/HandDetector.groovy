@@ -16,15 +16,27 @@ import main.poker.player.HandResult
 class HandDetector {
 
     static detect (List<Card> cards){
+        //Sorting cards here
+        PokerUtil.sortCards(cards)
 
-        //Sorting cards here?
-        CardUtil.sortCards(cards)
-
-        def results = []
+        List<HandResult> results = []
         detectSameCard(cards,results)
+
+        //Look for straights
         detectStraight(cards,results)
+        //Look for low straights
+        detectAceLowStraight(cards,results)
+
         detectFlush(cards,results)
-        detectOthers(results)
+        detectFullHouse(results)
+        detectStraightFlush(results)
+
+        //Get high cards
+        if(results.isEmpty()){
+           results << new HandResult(HandType.HIGH_CARD,cards[-5..-1])
+        }
+
+        PokerUtil.sortHandResults(results)
         return results
     }
 
@@ -54,12 +66,13 @@ class HandDetector {
         }
 
         if(pairResults.size() == 2){
-            //TO DO: Decide if should remove
-            //  results.removeAll(twoPairResults)
             results << new HandResult(HandType.TWO_PAIR,pairResults.collectMany{it.cards})
         }
     }
 
+    /*
+        TO DO: Support Ace as low in straight
+     */
     static detectStraight(List <Card> cards, List<HandResult> results){
         boolean straight = false
 
@@ -73,22 +86,40 @@ class HandDetector {
             Card nextCard = cards[i]
 
             if(nextCard.cardValue.value == (cardValue + 1)){
-                cardValue = nextCard.cardValue.value
+                //Add next card to list of straight cards
                 straightCards << nextCard
 
+                //Straight found
                 if(straightCards.size() > 4){
                     straight = true
                 }
             }
             else{
+                //If straight found and next card not included in straight - finish
+                if(straight){
+                    break
+                }
+                //Reset found cards
                 straightCards = [nextCard]
-                cardValue = nextCard.cardValue.value
             }
+
+            //Get next card value
+            cardValue = nextCard.cardValue.value
         }
 
-        if(straight){
-            int straightCardSize = straightCards.size()-1
-            results << new HandResult(HandType.STRAIGHT,straightCards[(straightCardSize-4)..straightCardSize])
+       if(straight){
+            results << new HandResult(HandType.STRAIGHT,straightCards[-5..-1])
+        }
+    }
+
+    static detectAceLowStraight(List<Card> cards, List<HandResult> results){
+        if(!results.find{it.handType == HandType.STRAIGHT}){
+            //Reorder cards
+            PokerUtil.convertAce(cards,true)
+            //Look for straights
+            detectStraight(cards,results)
+            //Reorder cards back
+            PokerUtil.convertAce(cards,false)
         }
     }
 
@@ -102,20 +133,10 @@ class HandDetector {
             }
 
             if(foundCards.size() > 4){
-                int lastCardIndex = foundCards.size() -1
-                results << new HandResult(HandType.FLUSH, foundCards[(lastCardIndex-4)..lastCardIndex])
+                results << new HandResult(HandType.FLUSH, foundCards[-5..-1])
                 break
             }
         }
-    }
-
-
-    /**
-     * Look for full house & Straight Flush
-     */
-    static detectOthers(List<HandResult> results){
-        detectFullHouse(results)
-        detectStraightFlush(results)
     }
 
     static detectFullHouse(List<HandResult> results){
