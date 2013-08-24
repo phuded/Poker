@@ -8,14 +8,54 @@ import main.poker.hand.HandType
 
 class HandDetectorTest extends GroovyTestCase {
 
+    void testPair() {
+
+        def cards = []
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.FOUR,Suit.DIAMONDS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.SPADES)
+        cards << new Card(CardValue.FOUR,Suit.CLUBS)
+        cards << new Card(CardValue.KING,Suit.DIAMONDS)
+        cards << new Card(CardValue.QUEEN,Suit.DIAMONDS)
+
+        println "testPair cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testPair results: " + results
+
+        assert results.size() == 1 && results[0].handType == HandType.PAIR
+    }
+
+    void testThreeOfAKind() {
+
+        def cards = []
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
+        cards << new Card(CardValue.FOUR,Suit.DIAMONDS)
+        cards << new Card(CardValue.ACE,Suit.SPADES)
+        cards << new Card(CardValue.THREE,Suit.SPADES)
+        cards << new Card(CardValue.FIVE,Suit.CLUBS)
+        cards << new Card(CardValue.ACE,Suit.DIAMONDS)
+        cards << new Card(CardValue.QUEEN,Suit.DIAMONDS)
+
+        println "testThreeOfAKind cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testThreeOfAKind results: " + results
+
+        assert results.size() == 1 && results[0].handType == HandType.THREE_OF_A_KIND
+    }
+
     void testTwoPair() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.SPADES)
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.CLUBS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.DIAMONDS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.SPADES)
+        cards << new Card(CardValue.ACE,Suit.CLUBS)
 
         println "testTwoPair cards: " + cards
 
@@ -29,12 +69,12 @@ class HandDetectorTest extends GroovyTestCase {
     void testBestTwoPair() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.SPADES)
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.CLUBS)
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.DIAMONDS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.SPADES)
+        cards << new Card(CardValue.ACE,Suit.CLUBS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
 
         println "testBestTwoPair cards: " + cards
 
@@ -48,13 +88,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testStraight() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.JACK,suit: Suit.CLUBS)
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.QUEEN,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.KING,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.NINE,suit: Suit.HEARTS)
+        cards << new Card(CardValue.TEN,Suit.HEARTS)
+        cards << new Card(CardValue.JACK,Suit.CLUBS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.QUEEN,Suit.HEARTS)
+        cards << new Card(CardValue.KING,Suit.DIAMONDS)
+        cards << new Card(CardValue.ACE,Suit.DIAMONDS)
+        cards << new Card(CardValue.NINE,Suit.HEARTS)
 
         println "testStraight cards: " + cards
 
@@ -68,13 +108,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testLowStraight() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.KING,suit: Suit.CLUBS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.FIVE,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.DIAMONDS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.KING,Suit.CLUBS)
+        cards << new Card(CardValue.THREE,Suit.HEARTS)
+        cards << new Card(CardValue.FOUR,Suit.HEARTS)
+        cards << new Card(CardValue.FIVE,Suit.DIAMONDS)
+        cards << new Card(CardValue.SEVEN,Suit.DIAMONDS)
 
         println "testLowStraight cards: " + cards
 
@@ -88,13 +128,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testFlush() {
 
       def cards = []
-      cards << new Card(cardValue: CardValue.EIGHT,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.THREE,suit: Suit.SPADES)
-      cards << new Card(cardValue: CardValue.JACK,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.QUEEN,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.KING,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.TWO,suit: Suit.DIAMONDS)
-      cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
+      cards << new Card(CardValue.EIGHT,Suit.HEARTS)
+      cards << new Card(CardValue.THREE,Suit.SPADES)
+      cards << new Card(CardValue.JACK,Suit.HEARTS)
+      cards << new Card(CardValue.QUEEN,Suit.HEARTS)
+      cards << new Card(CardValue.KING,Suit.HEARTS)
+      cards << new Card(CardValue.TWO,Suit.DIAMONDS)
+      cards << new Card(CardValue.ACE,Suit.HEARTS)
 
       println "testFlush cards: " + cards
 
@@ -105,16 +145,36 @@ class HandDetectorTest extends GroovyTestCase {
       assert results.size() == 1
     }
 
+    void testFourOfAKind() {
+
+        def cards = []
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.DIAMONDS)
+        cards << new Card(CardValue.TWO,Suit.SPADES)
+        cards << new Card(CardValue.TWO,Suit.CLUBS)
+        cards << new Card(CardValue.FOUR,Suit.SPADES)
+        cards << new Card(CardValue.KING,Suit.CLUBS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
+
+        println "testFourOfAKind cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testFourOfAKind results: " + results
+
+        assert results.size() == 1 && results[0].handType == HandType.FOUR_OF_A_KIND
+    }
+
     void testFullHouse() {
 
       def cards = []
-      cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.TWO,suit: Suit.DIAMONDS)
-      cards << new Card(cardValue: CardValue.TWO,suit: Suit.SPADES)
-      cards << new Card(cardValue: CardValue.THREE,suit: Suit.CLUBS)
-      cards << new Card(cardValue: CardValue.FOUR,suit: Suit.SPADES)
-      cards << new Card(cardValue: CardValue.FOUR,suit: Suit.CLUBS)
-      cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
+      cards << new Card(CardValue.TWO,Suit.HEARTS)
+      cards << new Card(CardValue.TWO,Suit.DIAMONDS)
+      cards << new Card(CardValue.TWO,Suit.SPADES)
+      cards << new Card(CardValue.THREE,Suit.CLUBS)
+      cards << new Card(CardValue.FOUR,Suit.SPADES)
+      cards << new Card(CardValue.FOUR,Suit.CLUBS)
+      cards << new Card(CardValue.FOUR,Suit.HEARTS)
 
       println "testFullHouse cards: " + cards
 
@@ -128,13 +188,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testStraightFlush() {
 
       def cards = []
-      cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
-      cards << new Card(cardValue: CardValue.FOUR,suit: Suit.SPADES)
-      cards << new Card(cardValue: CardValue.FIVE,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.SIX,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.EIGHT,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.NINE,suit: Suit.HEARTS)
+      cards << new Card(CardValue.THREE,Suit.DIAMONDS)
+      cards << new Card(CardValue.FOUR,Suit.SPADES)
+      cards << new Card(CardValue.FIVE,Suit.HEARTS)
+      cards << new Card(CardValue.SIX,Suit.HEARTS)
+      cards << new Card(CardValue.SEVEN,Suit.HEARTS)
+      cards << new Card(CardValue.EIGHT,Suit.HEARTS)
+      cards << new Card(CardValue.NINE,Suit.HEARTS)
 
       println "testStraightFlush cards: " + cards
 
@@ -148,13 +208,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testMismatchedStraightFlush() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
-        cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.FIVE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.SIX,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.EIGHT,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.DIAMONDS)
+        cards << new Card(CardValue.FOUR,Suit.HEARTS)
+        cards << new Card(CardValue.FIVE,Suit.HEARTS)
+        cards << new Card(CardValue.SIX,Suit.HEARTS)
+        cards << new Card(CardValue.SEVEN,Suit.HEARTS)
+        cards << new Card(CardValue.EIGHT,Suit.HEARTS)
+        cards << new Card(CardValue.TEN,Suit.HEARTS)
 
         println "testMismatchedStraightFlush cards: " + cards
 
@@ -168,13 +228,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testMismatchedLowStraightFlush() {
 
         def cards = []
-        cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.THREE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.FIVE,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.HEARTS)
-        cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.HEARTS)
+        cards << new Card(CardValue.FOUR,Suit.HEARTS)
+        cards << new Card(CardValue.FIVE,Suit.HEARTS)
+        cards << new Card(CardValue.SEVEN,Suit.HEARTS)
+        cards << new Card(CardValue.TEN,Suit.HEARTS)
 
         println "testMismatchedLowStraightFlush cards: " + cards
 
@@ -188,13 +248,13 @@ class HandDetectorTest extends GroovyTestCase {
     void testRoyalFlush() {
 
       def cards = []
-      cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.THREE,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.JACK,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.QUEEN,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.KING,suit: Suit.HEARTS)
-      cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
+      cards << new Card(CardValue.TWO,Suit.HEARTS)
+      cards << new Card(CardValue.THREE,Suit.HEARTS)
+      cards << new Card(CardValue.TEN,Suit.HEARTS)
+      cards << new Card(CardValue.JACK,Suit.HEARTS)
+      cards << new Card(CardValue.QUEEN,Suit.HEARTS)
+      cards << new Card(CardValue.KING,Suit.HEARTS)
+      cards << new Card(CardValue.ACE,Suit.HEARTS)
 
       println "testRoyalFlush cards: " + cards
 

@@ -34,7 +34,7 @@ class Deck {
     def makeDeck(){
         for(Suit suit: Suit){
             for(CardValue cardValue: CardValue){
-                cards << new Card(suit:suit, cardValue:cardValue)
+                cards << new Card(cardValue,suit)
             }
         }
     }

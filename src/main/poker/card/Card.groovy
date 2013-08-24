@@ -12,6 +12,11 @@ class Card {
     Suit suit;
     CardValue cardValue;
 
+    def Card(CardValue cardValue,Suit suit){
+        this.cardValue = cardValue
+        this.suit = suit
+    }
+
     String toString(){
         cardValue.name + "-" + suit.name
     }
