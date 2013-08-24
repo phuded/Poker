@@ -117,8 +117,12 @@ class HandDetector {
         }
 
        if(straight){
-            results << new HandResult(HandType.STRAIGHT,straightCards[-5..-1])
-        }
+           //Add straight
+           HandResult straightHandResult =  new HandResult(HandType.STRAIGHT,straightCards[-5..-1])
+           //Set secondary cards as all straight cards - for use in straight flush detection
+           straightHandResult.secondaryCards = straightCards
+           results << straightHandResult
+       }
     }
 
     static detectAceLowStraight(List<Card> cards, List<HandResult> results){
@@ -181,18 +185,45 @@ class HandDetector {
     }
 
     static detectStraightFlush(List<HandResult> results){
-
+        //Check if have a straight and flush to begin with
         HandResult flush = results.find{it.handType == HandType.FLUSH}
         HandResult straight = results.find{it.handType == HandType.STRAIGHT}
 
         if(flush && straight){
-           if(flush.cards == straight.cards){
-               results << new HandResult(HandType.STRAIGHT_FLUSH,straight.cards)
+            boolean isStraightFlush = false
+            Suit flushSuit = flush.cards.last().suit
+            List<Card> straightFlushCards = []
 
-               if(straight.cards.last().cardValue == CardValue.ACE){
-                   results << new HandResult(HandType.ROYAL_FLUSH, straight.cards)
-               }
-           }
+            //Loop through ALL straight cards (not just best 5)
+            straight.secondaryCards.each{ Card card ->
+                //If they have the flush suit - add
+                if(card.suit == flushSuit){
+                    straightFlushCards << card
+
+                    //Have a straight flush
+                    if(straightFlushCards.size() > 4){
+                        isStraightFlush = true
+                    }
+                }
+                else{
+                    //If no straight flush -> reset
+                    if(!isStraightFlush){
+                        straightFlushCards = []
+                    }
+
+                }
+            }
+
+            if(isStraightFlush){
+                //Get best 5 straight flush cards
+                straightFlushCards = straightFlushCards[-5..-1]
+                results << new HandResult(HandType.STRAIGHT_FLUSH,straightFlushCards)
+
+                //Check for royal flush
+                if(straightFlushCards.last().cardValue == CardValue.ACE){
+                    results << new HandResult(HandType.ROYAL_FLUSH, straightFlushCards)
+                }
+            }
         }
     }
 

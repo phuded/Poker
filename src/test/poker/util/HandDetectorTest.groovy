@@ -145,6 +145,46 @@ class HandDetectorTest extends GroovyTestCase {
       assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
     }
 
+    void testMismatchedStraightFlush() {
+
+        def cards = []
+        cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
+        cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.FIVE,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.SIX,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.EIGHT,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
+
+        println "testMismatchedStraightFlush cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testMismatchedStraightFlush results: " + results
+
+        assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+    }
+
+    void testMismatchedLowStraightFlush() {
+
+        def cards = []
+        cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.THREE,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.FOUR,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.FIVE,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.SEVEN,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.TEN,suit: Suit.HEARTS)
+
+        println "testMismatchedLowStraightFlush cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testMismatchedLowStraightFlush results: " + results
+
+        assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+    }
+
     void testRoyalFlush() {
 
       def cards = []
