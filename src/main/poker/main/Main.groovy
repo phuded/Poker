@@ -13,6 +13,8 @@ class Main {
 
     static main(args) {
         Game game = new Game()
+
+        println "================================"
         game.startGame()
     }
 

@@ -49,8 +49,13 @@ class Round {
 
         //Add other cards
         dealFlop()
+
+        println "================================"
+
         dealRiver()
         dealFinal()
+
+        println "================================"
 
         //Detect hands...
         players.each{ Player player ->
@@ -83,7 +88,6 @@ class Round {
             player.addGameCards(flop)
 
             println "MAIN: " + player.name + " - Hand after flop: " + player.allCards
-            println "================================"
         }
     }
 
@@ -110,7 +114,6 @@ class Round {
             player.addGameCards(finalCard)
 
             println "MAIN: " + player.name + " - After All cards: " + player.allCards
-            println "================================"
         }
     }
 }
