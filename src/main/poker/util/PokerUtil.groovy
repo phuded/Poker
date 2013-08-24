@@ -2,7 +2,7 @@ package main.poker.util
 
 import main.poker.card.Card
 import main.poker.card.CardValue
-import main.poker.player.HandResult
+import main.poker.hand.Hand
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,8 +35,8 @@ class PokerUtil {
         sortCards(cards)
     }
 
-    static sortHandResults(List<HandResult> results){
-        results.sort{
+    static sortHandResults(List<Hand> hands){
+        hands.sort{
             it.handType.value
         }
 

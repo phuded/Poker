@@ -1,6 +1,7 @@
 package main.poker.player
 
 import main.poker.card.Card
+import main.poker.hand.Hand
 import main.poker.util.HandDetector
 
 /**
@@ -17,8 +18,8 @@ class Player {
 
     // First 2 plus all game cards (up to 7)
     List<Card> allCards = []
-    List<HandResult> handResults
-    HandResult bestHandResult
+    List<Hand> hands
+    Hand bestHand
 
     def Player(String name){
         this.name = name
@@ -40,8 +41,8 @@ class Player {
     }
 
     def detectHand(){
-        handResults = HandDetector.detect(allCards)
-        bestHandResult = handResults.last()
+        hands = HandDetector.detect(allCards)
+        bestHand = hands.last()
     }
 
     @Override

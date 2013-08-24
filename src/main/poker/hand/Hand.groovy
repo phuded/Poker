@@ -1,7 +1,6 @@
-package main.poker.player
+package main.poker.hand
 
 import main.poker.card.Card
-import main.poker.hand.HandType
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,13 +9,13 @@ import main.poker.hand.HandType
  * Time: 16:15
  * To change this template use File | Settings | File Templates.
  */
-class HandResult {
+class Hand {
     HandType handType
     List<Card> cards
     //Cards not included in hand
     List<Card> secondaryCards
 
-    def HandResult(HandType handType, List<Card> cards){
+    def Hand(HandType handType, List<Card> cards){
         this.handType = handType
         this.cards = cards
         this.secondaryCards = []
@@ -28,8 +27,8 @@ class HandResult {
     }
 
     @Override
-    boolean equals(HandResult nextHandResult){
-        if(this.handType == nextHandResult.handType && this.cards == nextHandResult.cards){
+    boolean equals(Hand nextHandResult){
+        if(this.handType == nextHandResult.handType && this.cards == nextHandResult.cards && this.secondaryCards == nextHandResult.secondaryCards){
             return true
         }
         return false

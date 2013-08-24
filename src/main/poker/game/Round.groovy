@@ -2,6 +2,7 @@ package main.poker.game
 
 import main.poker.card.Card
 import main.poker.player.Player
+import main.poker.util.RoundWinnerDetector
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +18,12 @@ class Round {
 
     // Up for 5 cards
     List<Card> gameCards
+
+    //Winner
+    Player winner
+
+    //Draw
+    boolean isDraw
 
     def Round(List<Player> players, deck){
         //Add deck and shuffle
@@ -48,10 +55,15 @@ class Round {
         //Detect hands...
         players.each{ Player player ->
             player.detectHand()
-            println "MAIN: "+ player.name + " - All hand-results: " + player.handResults
-            println "MAIN: "+ player.name + " - Best hand-result: " + player.bestHandResult
-            println "================================"
+           // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
+            println "MAIN: "+ player.name + " - Best hand-result: " + player.bestHand
         }
+
+        println "================================"
+
+        //Get winner
+        def winner = RoundWinnerDetector.detectWinner(players)
+
     }
 
     // Deal 1st two cards to player
