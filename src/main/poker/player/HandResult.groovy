@@ -13,15 +13,18 @@ import main.poker.hand.HandType
 class HandResult {
     HandType handType
     List<Card> cards
+    //Cards not included in hand
+    List<Card> secondaryCards
 
     def HandResult(HandType handType, List<Card> cards){
         this.handType = handType
         this.cards = cards
+        this.secondaryCards = []
     }
 
     @Override
     String toString(){
-        def result = handType.name + " - " + cards
+        def result = handType.name + " - " + cards + "("+secondaryCards+")"
     }
 
     @Override

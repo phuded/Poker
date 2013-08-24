@@ -36,7 +36,12 @@ class HandDetector {
            results << new HandResult(HandType.HIGH_CARD,cards[-5..-1])
         }
 
+        //Sort results
         PokerUtil.sortHandResults(results)
+
+        //Get secondary cards
+        getSecondaryCards(results.last(),cards)
+
         return results
     }
 
@@ -61,12 +66,16 @@ class HandDetector {
         //Get unique results since above logic will create multiple entries for each unique hand
         results = results.unique()
 
+        //Get all pairs
         List<HandResult> pairResults = results.findAll{
             it.handType == HandType.PAIR
         }
 
-        if(pairResults.size() == 2){
-            results << new HandResult(HandType.TWO_PAIR,pairResults.collectMany{it.cards})
+        //If more than 1 pair -> two pair
+        if(pairResults.size() > 1){
+            List<Card> twoPairCards = pairResults.collectMany{it.cards}
+            //Limit to best 2 pair
+            results << new HandResult(HandType.TWO_PAIR,twoPairCards[-4..-1])
         }
     }
 
@@ -184,6 +193,18 @@ class HandDetector {
                    results << new HandResult(HandType.ROYAL_FLUSH, straight.cards)
                }
            }
+        }
+    }
+
+    static getSecondaryCards(HandResult bestResult, List<Card> cards){
+        int cardsToFill = 5 - bestResult.cards.size()
+        if(cardsToFill > 0){
+            //Get best remaining cards
+            List <Card> bestRemainingCards = cards.findAll{
+                !bestResult.cards.contains(it)
+            }
+            //Add as secondary cards
+            bestResult.secondaryCards.addAll(bestRemainingCards[-cardsToFill..-1])
         }
     }
 

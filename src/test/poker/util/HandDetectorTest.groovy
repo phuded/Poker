@@ -26,6 +26,25 @@ class HandDetectorTest extends GroovyTestCase {
         assert results.size() == 3 && results.findAll{it.handType == HandType.TWO_PAIR}.size()==1
     }
 
+    void testBestTwoPair() {
+
+        def cards = []
+        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.THREE,suit: Suit.DIAMONDS)
+        cards << new Card(cardValue: CardValue.TWO,suit: Suit.HEARTS)
+        cards << new Card(cardValue: CardValue.THREE,suit: Suit.SPADES)
+        cards << new Card(cardValue: CardValue.ACE,suit: Suit.CLUBS)
+        cards << new Card(cardValue: CardValue.ACE,suit: Suit.HEARTS)
+
+        println "testBestTwoPair cards: " + cards
+
+        def results = HandDetector.detect(cards)
+
+        println "testBestTwoPair results: " + results
+
+        assert results.size() == 4 && results.findAll{it.handType == HandType.TWO_PAIR}.size()==1
+    }
+
     void testStraight() {
 
         def cards = []

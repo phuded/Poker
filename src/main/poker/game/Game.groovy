@@ -43,7 +43,8 @@ class Game {
 
         //Detect hand...
         player.detectHand()
-        println "MAIN: Player hand-results:" + player.handResults
+        println "MAIN: Player ALl hand-results:" + player.handResults
+        println "MAIN: Player Best hand-result:" + player.bestHandResult
 
     }
 
