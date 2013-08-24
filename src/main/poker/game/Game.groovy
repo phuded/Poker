@@ -13,54 +13,23 @@ import main.poker.util.HandDetector
  */
 class Game {
     Deck deck
-    Player player
-    def gameCards = []
+    List<Player> players
+    List<Round> rounds
 
     Game(){
-        player = new Player (name: "Matt")
+        players = []
+        rounds = []
+        //Create players and new deck
+        players << new Player ("Matt")
+        players << new Player ("Cathy")
         deck = new Deck()
     }
 
     def startGame(){
-        deck.shuffle()
+        println "MAIN: Starting game with: "+ players
 
-        //Player gets to cards
-        player.addCardToHand(deck.dealCard())
-        player.addCardToHand(deck.dealCard())
-
-        //Get the flop
-        getFlop()
-
-        //Add game cards to player hand
-        player.addGameCards(gameCards[0..2])
-
-        println "MAIN: Player whole-hand: " + player.wholeHand
-
-        getRiver()
-        getFinal()
-        player.addGameCards(gameCards[3..4])
-        println "MAIN: Player whole-hand after final 2 cards: " + player.wholeHand
-
-        //Detect hand...
-        player.detectHand()
-        println "MAIN: Player ALl hand-results:" + player.handResults
-        println "MAIN: Player Best hand-result:" + player.bestHandResult
-
-    }
-
-    /**
-     * Gets the Flop
-     * @return
-     */
-    def getFlop(){
-        gameCards.addAll(deck.dealFlop())
-    }
-
-    def getRiver(){
-        gameCards.add(deck.dealCard())
-    }
-
-    def getFinal(){
-        gameCards.add(deck.dealCard())
+        Round round = new Round(players, deck)
+        round.playRound()
+        rounds << round
     }
 }

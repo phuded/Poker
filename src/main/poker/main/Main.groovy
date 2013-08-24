@@ -13,18 +13,7 @@ class Main {
 
     static main(args) {
         Game game = new Game()
-
         game.startGame()
-
-      //  printGame(game)
-
     }
-
-    static printGame(Game game){
-        println game.player.hand
-        println game.gameCards
-        println game.deck.getRemainingCards() + " remaining cards."
-    }
-
 
 }

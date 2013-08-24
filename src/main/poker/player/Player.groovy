@@ -12,14 +12,25 @@ import main.poker.util.HandDetector
  */
 class Player {
     String name
-    List<Card> hand = []
+    // First 2 cards
+    List<Card> initialHand = []
+
+    // First 2 plus all game cards (up to 7)
     List<Card> wholeHand = []
     List<HandResult> handResults
     HandResult bestHandResult
 
+    def Player(String name){
+        this.name = name
+    }
+
     def addCardToHand(Card card){
-        hand.push(card)
+        initialHand.push(card)
         wholeHand.push(card)
+    }
+
+    def addGameCards(Card card){
+        wholeHand.add(card)
     }
 
     def addGameCards(List <Card> cards){
@@ -30,4 +41,10 @@ class Player {
         handResults = HandDetector.detect(wholeHand)
         bestHandResult = handResults.last()
     }
+
+    @Override
+    String toString(){
+       this.name
+    }
+
 }
