@@ -37,64 +37,67 @@ class Round {
 
         players.each { Player player ->
             //Player gets two cards
-            player.addCardToHand(deck.dealCard())
-            player.addCardToHand(deck.dealCard())
-
+            dealCardsToPlayer(player)
         }
 
         //Add other cards
-        getFlop()
-        getRiver()
-        getFinal()
+        dealFlop()
+        dealRiver()
+        dealFinal()
 
         //Detect hands...
         players.each{ Player player ->
             player.detectHand()
-            println "MAIN: "+ player.name + " - All hand-results:" + player.handResults
-            println "MAIN: "+ player.name + " - Best hand-result:" + player.bestHandResult
+            println "MAIN: "+ player.name + " - All hand-results: " + player.handResults
+            println "MAIN: "+ player.name + " - Best hand-result: " + player.bestHandResult
             println "================================"
         }
     }
 
-    /**
-     * Gets the Flop
-     * @return
-     */
-    def getFlop(){
+    // Deal 1st two cards to player
+    def dealCardsToPlayer(Player player){
+        player.receiveCard(deck.getCard())
+        player.receiveCard(deck.getCard())
+    }
 
-        List<Card> flop = deck.dealFlop()
+    //Deal flop
+    def dealFlop(){
+
+        List<Card> flop = deck.getFlop()
         gameCards.addAll(flop)
 
         players.each { Player player ->
             //Add flop to player hand
             player.addGameCards(flop)
 
-            println "MAIN: " + player.name + " - Hand after flop: " + player.wholeHand
+            println "MAIN: " + player.name + " - Hand after flop: " + player.allCards
             println "================================"
         }
     }
 
-    def getRiver(){
-        Card river = deck.dealCard()
+    //Deal river game card
+    def dealRiver(){
+        Card river = deck.getCard()
         gameCards.add(river)
 
         players.each { Player player ->
             //Add river card to player hand
             player.addGameCards(river)
 
-           // println "MAIN: Player: " + player.name + " hand after river: " + player.wholeHand
+           // println "MAIN: Player: " + player.name + " hand after river: " + player.allCards
         }
     }
 
-    def getFinal(){
-        Card finalCard = deck.dealCard()
+    //Deal final game card
+    def dealFinal(){
+        Card finalCard = deck.getCard()
         gameCards.add(finalCard)
 
         players.each { Player player ->
             //Add final card to player hand
             player.addGameCards(finalCard)
 
-            println "MAIN: " + player.name + " -  After All cards: " + player.wholeHand
+            println "MAIN: " + player.name + " - After All cards: " + player.allCards
             println "================================"
         }
     }

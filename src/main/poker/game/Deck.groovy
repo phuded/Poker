@@ -18,11 +18,11 @@ class Deck {
         makeDeck()
     }
 
-    Card dealCard(){
+    Card getCard(){
         return cards.pop()
     }
 
-    def dealFlop(){
+    def getFlop(){
         def flop = []
         flop << cards.pop()
         flop << cards.pop()
@@ -31,6 +31,7 @@ class Deck {
         return flop
     }
 
+    // Build deck
     def makeDeck(){
         for(Suit suit: Suit){
             for(CardValue cardValue: CardValue){
@@ -43,7 +44,7 @@ class Deck {
         Collections.shuffle(cards)
     }
 
-    int getRemainingCards(){
+    int getRemainingNumberOfCards(){
        cards.size()
     }
 }
