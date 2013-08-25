@@ -19,11 +19,8 @@ class Round {
     // Up for 5 cards
     List<Card> gameCards
 
-    //Winner
-    Player winner
-
-    //Draw
-    boolean isDraw
+    //Winners
+    List<Player> winners
 
     def Round(List<Player> players, deck){
         //Add deck and shuffle
@@ -67,7 +64,9 @@ class Round {
         println "================================"
 
         //Get winner
-        def winner = RoundWinnerDetector.detectWinner(players)
+        winners = RoundWinnerDetector.detectWinner(players)
+
+        println "MAIN: Winners: " + winners
 
     }
 

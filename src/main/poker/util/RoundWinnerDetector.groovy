@@ -17,83 +17,86 @@ class RoundWinnerDetector {
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
-        println "MAIN: Best hand: " + bestHandType
+        println "MAIN: Best hand type: " + bestHandType.name
 
         //Get all players with that hand type
         List<Player> winningPlayers = players.findAll{it.bestHand.handType == bestHandType}
 
-        println "MAIN: Winning Players: " + winningPlayers
+        println "MAIN: Players with winning hand type: " + winningPlayers
 
-        // If one player -> theya are the winner
+        // If one player with hand-> they are the winner
         if(winningPlayers.size() == 1){
-            return [winner: winningPlayers[0], isDraw:false]
+            return winningPlayers
         }
         else{
-            //Complex LOGIC - TO DO
-            getBetterHand(winningPlayers)
+            //Pick winners who have the best of that hand type
+            return getWinners(winningPlayers)
         }
 
     }
 
+    //Get winners based on cards in hand
+    static getWinners(List<Player> potentialWinners){
 
-    static getBetterHand(List<Player> winningPlayers){
-        println "MAIN: Winner: " + isBetterHand(winningPlayers[0],winningPlayers[1])
+       List<Player> losers = []
+       int handSize = potentialWinners.first().bestHand.cards.size()
+       int cardIndex = handSize -1
 
-    }
+        for(cardIndex; cardIndex>=0; cardIndex--){
+            //Get the best card in the position
+            Card bestCardInPosition = potentialWinners.max{it.bestHand.cards[cardIndex].cardValue.value}.bestHand.cards[cardIndex]
+            int bestCardValue = bestCardInPosition.cardValue.value
 
+            //Loop through players -> disgard any which don't have max card
+            potentialWinners.each{ Player player ->
+                int lastCardValue = player.bestHand.cards[cardIndex].cardValue.value
+                if(lastCardValue != bestCardValue){
+                    losers << player
+                }
+            }
 
-    static isBetterHand(Player playerA, Player playerB){
+            //Remove losers from potential winners and reset losers
+            potentialWinners.removeAll(losers)
+            losers = []
 
-        int numberOfCards = playerA.bestHand.cards.size()
-
-        int cardComparison = compareCards(playerA.bestHand.cards,playerB.bestHand.cards)
-
-        if(cardComparison == 1){
-            return playerA
         }
-        else if(cardComparison == 2){
-            return playerB
+
+        //If still more than 1 winner and the hand size is less than 5
+        if(potentialWinners.size() > 1 && handSize <5){
+            return getWinnersFromSecondaryCards(potentialWinners)
         }
         else{
-            if(numberOfCards < 5){
-                int secondaryCardComparison = compareCards(playerA.bestHand.secondaryCards,playerB.bestHand.secondaryCards)
-
-                if(secondaryCardComparison == 1){
-                    return playerA
-                }
-                else if(secondaryCardComparison == 2){
-                    return playerB
-                }
-                else{
-                    return "DRAW"
-                }
-            }
-            else{
-                return "DRAW"
-            }
+            return potentialWinners
         }
     }
 
-    static compareCards(List<Card> cardsA, List<Card> cardsB){
-        int numberOfCards = cardsA.size()
-        int lastCardIndex = numberOfCards -1
+    //Filter winners based on kicker cards
+    static getWinnersFromSecondaryCards(List<Player> potentialWinners){
 
-        for(lastCardIndex;lastCardIndex>=0;lastCardIndex--){
-            Card cardA = cardsA[lastCardIndex]
-            Card cardB = cardsB[lastCardIndex]
+        List<Player> losers = []
+        int secondaryCardSize = potentialWinners.first().bestHand.secondaryCards.size()
+        int cardIndex = secondaryCardSize -1
 
-            if(cardA.cardValue.value>cardB.cardValue.value){
-                //println "SEE - " +cardA.cardValue + " is better than " + cardB.cardValue
-                return 1
+        for(cardIndex; cardIndex>=0; cardIndex--){
+            //Get the best card in the position
+            Card bestCardInPosition = potentialWinners.max{it.bestHand.secondaryCards[cardIndex].cardValue.value}.bestHand.secondaryCards[cardIndex]
+            int bestCardValue = bestCardInPosition.cardValue.value
+
+            //Loop through players -> disgard any which don't have max card
+            potentialWinners.each{ Player player ->
+                int lastCardValue = player.bestHand.secondaryCards[cardIndex].cardValue.value
+                if(lastCardValue != bestCardValue){
+                    losers << player
+                }
             }
-            else if(cardB.cardValue.value > cardA.cardValue.value){
-                //println "SEE - " +cardB.cardValue + " is better than " + cardA.cardValue
-                return 2
-            }
+
+            //Remove losers from potential winners and reset losers
+            potentialWinners.removeAll(losers)
+            losers = []
+
         }
 
-        return 0
+        return potentialWinners
     }
-
 
 }

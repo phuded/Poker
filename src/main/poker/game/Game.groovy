@@ -22,6 +22,8 @@ class Game {
         //Create players and new deck
         players << new Player ("Matt")
         players << new Player ("Cathy")
+        players << new Player ("Becky")
+        players << new Player ("Ella")
         deck = new Deck()
     }
 
