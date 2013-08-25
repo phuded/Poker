@@ -15,6 +15,41 @@ import main.poker.util.RoundWinnerDetector
  */
 class RoundWinnerDetectorTest extends GroovyTestCase {
 
+    void testDifferentHighCards() {
+
+        List<Card> gameCards = []
+        gameCards << new Card(CardValue.TWO,Suit.HEARTS)
+        gameCards << new Card(CardValue.FOUR,Suit.DIAMONDS)
+        gameCards << new Card(CardValue.ACE,Suit.HEARTS)
+        gameCards << new Card(CardValue.KING,Suit.DIAMONDS)
+        gameCards << new Card(CardValue.QUEEN,Suit.DIAMONDS)
+
+        Player player1 = new Player("Player 1")
+        player1.receiveCard(new Card(CardValue.TEN,Suit.CLUBS))
+        player1.receiveCard(new Card(CardValue.NINE,Suit.SPADES))
+
+        player1.addGameCards(gameCards)
+
+        Player player2 = new Player("Player 2")
+        player2.receiveCard(new Card(CardValue.TEN,Suit.HEARTS))
+        player2.receiveCard(new Card(CardValue.EIGHT,Suit.SPADES))
+
+        player2.addGameCards(gameCards)
+
+        List<Player> players = [player1,player2]
+
+        players.each{ Player player ->
+            player.detectHand()
+            println "testDifferentHighCards: "+ player.name + " - Best hand: " + player.bestHand
+        }
+
+        List <Player> winners = RoundWinnerDetector.detectWinners(players)
+        println "testDifferentHighCards: Winners: " + winners
+
+        assert winners.size() == 1 && winners.first().name == "Player 1"
+        println "================================"
+    }
+
     void testSamePairsWithSameKickers() {
 
         List<Card> gameCards = []
@@ -40,7 +75,7 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
 
         players.each{ Player player ->
             player.detectHand()
-            println "testSamePairsWithSameKickers: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "testSamePairsWithSameKickers: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         List <Player> winners = RoundWinnerDetector.detectWinners(players)
@@ -75,7 +110,7 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
 
         players.each{ Player player ->
             player.detectHand()
-            println "testSamePairsWithDifferentKickers: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "testSamePairsWithDifferentKickers: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         List <Player> winners = RoundWinnerDetector.detectWinners(players)
@@ -110,7 +145,7 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
 
         players.each{ Player player ->
             player.detectHand()
-            println "testDifferentThreesInFullHouse: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "testDifferentThreesInFullHouse: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         List <Player> winners = RoundWinnerDetector.detectWinners(players)
@@ -145,7 +180,7 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
 
         players.each{ Player player ->
             player.detectHand()
-            println "testDifferentThreesInFullHouse2: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "testDifferentThreesInFullHouse2: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         List <Player> winners = RoundWinnerDetector.detectWinners(players)
@@ -180,7 +215,7 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
 
         players.each{ Player player ->
             player.detectHand()
-            println "testDifferentPairsInFullHouse: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "testDifferentPairsInFullHouse: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         List <Player> winners = RoundWinnerDetector.detectWinners(players)

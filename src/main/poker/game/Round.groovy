@@ -58,7 +58,7 @@ class Round {
         players.each{ Player player ->
             player.detectHand()
            // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
-            println "MAIN: "+ player.name + " - Best hand-result: " + player.bestHand
+            println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
         }
 
         println "================================"
