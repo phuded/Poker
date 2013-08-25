@@ -64,7 +64,7 @@ class Round {
         println "================================"
 
         //Get winner
-        winners = RoundWinnerDetector.detectWinner(players)
+        winners = RoundWinnerDetector.detectWinners(players)
 
         println "MAIN: Winners: " + winners
 

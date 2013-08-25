@@ -25,7 +25,8 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testPair results: " + results
 
-        assert results.size() == 1 && results[0].handType == HandType.PAIR
+        assert results.size() == 1 && results.first().handType == HandType.PAIR
+        println "================================"
     }
 
     void testThreeOfAKind() {
@@ -45,7 +46,8 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testThreeOfAKind results: " + results
 
-        assert results.size() == 1 && results[0].handType == HandType.THREE_OF_A_KIND
+        assert results.size() == 1 && results.first().handType == HandType.THREE_OF_A_KIND
+        println "================================"
     }
 
     void testTwoPair() {
@@ -64,6 +66,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "testTwoPair results: " + results
 
         assert results.size() == 3 && results.findAll{it.handType == HandType.TWO_PAIR}.size()==1
+        println "================================"
     }
 
     void testBestTwoPair() {
@@ -83,6 +86,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "testBestTwoPair results: " + results
 
         assert results.size() == 4 && results.findAll{it.handType == HandType.TWO_PAIR}.size()==1
+        println "================================"
     }
 
     void testStraight() {
@@ -102,7 +106,8 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testStraight results: " + results
 
-        assert results.size() == 1 && results[0].handType == HandType.STRAIGHT
+        assert results.size() == 1 && results.first().handType == HandType.STRAIGHT
+        println "================================"
     }
 
     void testLowStraight() {
@@ -122,27 +127,29 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testLowStraight results: " + results
 
-        assert results.size() == 1 && results[0].handType == HandType.STRAIGHT
+        assert results.size() == 1 && results.first().handType == HandType.STRAIGHT
+        println "================================"
     }
 
     void testFlush() {
 
-      def cards = []
-      cards << new Card(CardValue.EIGHT,Suit.HEARTS)
-      cards << new Card(CardValue.THREE,Suit.SPADES)
-      cards << new Card(CardValue.JACK,Suit.HEARTS)
-      cards << new Card(CardValue.QUEEN,Suit.HEARTS)
-      cards << new Card(CardValue.KING,Suit.HEARTS)
-      cards << new Card(CardValue.TWO,Suit.DIAMONDS)
-      cards << new Card(CardValue.ACE,Suit.HEARTS)
+        def cards = []
+        cards << new Card(CardValue.EIGHT,Suit.HEARTS)
+        cards << new Card(CardValue.THREE,Suit.SPADES)
+        cards << new Card(CardValue.JACK,Suit.HEARTS)
+        cards << new Card(CardValue.QUEEN,Suit.HEARTS)
+        cards << new Card(CardValue.KING,Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.DIAMONDS)
+        cards << new Card(CardValue.ACE,Suit.HEARTS)
 
-      println "testFlush cards: " + cards
+        println "testFlush cards: " + cards
 
-      def results = HandDetector.detect(cards)
+        def results = HandDetector.detect(cards)
 
-      println "testFlush results: " + results
+        println "testFlush results: " + results
 
-      assert results.size() == 1
+        assert results.size() == 1
+        println "================================"
     }
 
     void testFourOfAKind() {
@@ -162,47 +169,50 @@ class HandDetectorTest extends GroovyTestCase {
 
         println "testFourOfAKind results: " + results
 
-        assert results.size() == 1 && results[0].handType == HandType.FOUR_OF_A_KIND
+        assert results.size() == 1 && results.first().handType == HandType.FOUR_OF_A_KIND
+        println "================================"
     }
 
     void testFullHouse() {
 
-      def cards = []
-      cards << new Card(CardValue.TWO,Suit.HEARTS)
-      cards << new Card(CardValue.TWO,Suit.DIAMONDS)
-      cards << new Card(CardValue.TWO,Suit.SPADES)
-      cards << new Card(CardValue.THREE,Suit.CLUBS)
-      cards << new Card(CardValue.FOUR,Suit.SPADES)
-      cards << new Card(CardValue.FOUR,Suit.CLUBS)
-      cards << new Card(CardValue.FOUR,Suit.HEARTS)
+        def cards = []
+        cards << new Card(CardValue.TWO,Suit.HEARTS)
+        cards << new Card(CardValue.TWO,Suit.DIAMONDS)
+        cards << new Card(CardValue.TWO,Suit.SPADES)
+        cards << new Card(CardValue.THREE,Suit.CLUBS)
+        cards << new Card(CardValue.FOUR,Suit.SPADES)
+        cards << new Card(CardValue.FOUR,Suit.CLUBS)
+        cards << new Card(CardValue.FOUR,Suit.HEARTS)
 
-      println "testFullHouse cards: " + cards
+        println "testFullHouse cards: " + cards
 
-      def results = HandDetector.detect(cards)
+        def results = HandDetector.detect(cards)
 
-      println "testFullHouse results: " + results
+        println "testFullHouse results: " + results
 
-      assert results.size() == 3 && results.findAll{it.handType == HandType.FULLHOUSE}.size()==1
+        assert results.size() == 3 && results.findAll{it.handType == HandType.FULLHOUSE}.size()==1
+        println "================================"
     }
 
     void testStraightFlush() {
 
-      def cards = []
-      cards << new Card(CardValue.THREE,Suit.DIAMONDS)
-      cards << new Card(CardValue.FOUR,Suit.SPADES)
-      cards << new Card(CardValue.FIVE,Suit.HEARTS)
-      cards << new Card(CardValue.SIX,Suit.HEARTS)
-      cards << new Card(CardValue.SEVEN,Suit.HEARTS)
-      cards << new Card(CardValue.EIGHT,Suit.HEARTS)
-      cards << new Card(CardValue.NINE,Suit.HEARTS)
+        def cards = []
+        cards << new Card(CardValue.THREE,Suit.DIAMONDS)
+        cards << new Card(CardValue.FOUR,Suit.SPADES)
+        cards << new Card(CardValue.FIVE,Suit.HEARTS)
+        cards << new Card(CardValue.SIX,Suit.HEARTS)
+        cards << new Card(CardValue.SEVEN,Suit.HEARTS)
+        cards << new Card(CardValue.EIGHT,Suit.HEARTS)
+        cards << new Card(CardValue.NINE,Suit.HEARTS)
 
-      println "testStraightFlush cards: " + cards
+        println "testStraightFlush cards: " + cards
 
-      def results = HandDetector.detect(cards)
+        def results = HandDetector.detect(cards)
 
-      println "testStraightFlush results: " + results
+        println "testStraightFlush results: " + results
 
-      assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+        assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+        println "================================"
     }
 
     void testMismatchedStraightFlush() {
@@ -223,6 +233,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "testMismatchedStraightFlush results: " + results
 
         assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+        println "================================"
     }
 
     void testMismatchedLowStraightFlush() {
@@ -243,6 +254,7 @@ class HandDetectorTest extends GroovyTestCase {
         println "testMismatchedLowStraightFlush results: " + results
 
         assert results.size() == 3 && results.last().handType == HandType.STRAIGHT_FLUSH
+        println "================================"
     }
 
     void testRoyalFlush() {
@@ -263,5 +275,6 @@ class HandDetectorTest extends GroovyTestCase {
       println "testRoyalFlush results: " + results
 
       assert results.size() == 4 && results.last().handType == HandType.ROYAL_FLUSH
+      println "================================"
     }
 }

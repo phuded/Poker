@@ -13,7 +13,7 @@ import main.poker.hand.HandType
  */
 class RoundWinnerDetector {
 
-    static detectWinner(List<Player> players){
+    static detectWinners(List<Player> players){
         //Find best hand type
         HandType bestHandType = players.max{it.bestHand.handType}.bestHand.handType
 
@@ -30,13 +30,13 @@ class RoundWinnerDetector {
         }
         else{
             //Pick winners who have the best of that hand type
-            return getWinners(winningPlayers)
+            return getWinnersOfBestHandType(winningPlayers)
         }
 
     }
 
     //Get winners based on cards in hand
-    static getWinners(List<Player> potentialWinners){
+    static getWinnersOfBestHandType(List<Player> potentialWinners){
 
        List<Player> losers = []
        int handSize = potentialWinners.first().bestHand.cards.size()
@@ -63,7 +63,7 @@ class RoundWinnerDetector {
 
         //If still more than 1 winner and the hand size is less than 5
         if(potentialWinners.size() > 1 && handSize <5){
-            return getWinnersFromSecondaryCards(potentialWinners)
+            return getWinnersOfBestSecondaryCards(potentialWinners)
         }
         else{
             return potentialWinners
@@ -71,7 +71,7 @@ class RoundWinnerDetector {
     }
 
     //Filter winners based on kicker cards
-    static getWinnersFromSecondaryCards(List<Player> potentialWinners){
+    static getWinnersOfBestSecondaryCards(List<Player> potentialWinners){
 
         List<Player> losers = []
         int secondaryCardSize = potentialWinners.first().bestHand.secondaryCards.size()
