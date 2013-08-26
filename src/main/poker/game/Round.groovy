@@ -12,34 +12,34 @@ import main.poker.util.RoundWinnerDetector
  * To change this template use File | Settings | File Templates.
  */
 class Round {
-
-    Deck deck
-    List<Player> players
+    //Parent parentGame
+    Game parentGame
 
     // Up for 5 cards
-    List<Card> gameCards
+    List<Card> roundCards
 
     //Winners
     List<Player> winners
 
-    def Round(List<Player> players, deck){
-        //Add deck and shuffle
-        this.deck = deck
-        this.deck.shuffle()
+    def Round(Game game){
+        //Link to parent parentGame
+        parentGame = game
 
-        //Add players
-        this.players = players
+        //Create/replace deck and shuffle
+        parentGame.deck = new Deck()
+        parentGame.deck.shuffle()
 
-        //Prepare game cards
-        gameCards = []
+        //Prepare parentGame cards
+        roundCards = []
     }
 
     def playRound(){
 
-        println "MAIN: New round"
+        println "================================"
+        println "MAIN: New round - " + (parentGame.rounds.size() + 1)
         println "================================"
 
-        players.each { Player player ->
+        parentGame.players.each { Player player ->
             //Player gets two cards
             dealCardsToPlayer(player)
         }
@@ -55,7 +55,7 @@ class Round {
         println "================================"
 
         //Detect hands...
-        players.each{ Player player ->
+        parentGame.players.each{ Player player ->
             player.detectHand()
            // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
             println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
@@ -64,25 +64,27 @@ class Round {
         println "================================"
 
         //Get winner
-        winners = RoundWinnerDetector.detectWinners(players)
+        winners = RoundWinnerDetector.detectWinners(parentGame.players)
 
         println "MAIN: Winners: " + winners
 
+        //Finish and play next round
+        parentGame.nextRound(this)
     }
 
     // Deal 1st two cards to player
     def dealCardsToPlayer(Player player){
-        player.receiveCard(deck.getCard())
-        player.receiveCard(deck.getCard())
+        player.receiveCard(parentGame.deck.getCard())
+        player.receiveCard(parentGame.deck.getCard())
     }
 
     //Deal flop
     def dealFlop(){
 
-        List<Card> flop = deck.getFlop()
-        gameCards.addAll(flop)
+        List<Card> flop = parentGame.deck.getFlop()
+        roundCards.addAll(flop)
 
-        players.each { Player player ->
+        parentGame.players.each { Player player ->
             //Add flop to player hand
             player.addGameCards(flop)
 
@@ -90,12 +92,12 @@ class Round {
         }
     }
 
-    //Deal river game card
+    //Deal river parentGame card
     def dealRiver(){
-        Card river = deck.getCard()
-        gameCards.add(river)
+        Card river = parentGame.deck.getCard()
+        roundCards.add(river)
 
-        players.each { Player player ->
+        parentGame.players.each { Player player ->
             //Add river card to player hand
             player.addGameCards(river)
 
@@ -103,12 +105,12 @@ class Round {
         }
     }
 
-    //Deal final game card
+    //Deal final parentGame card
     def dealFinal(){
-        Card finalCard = deck.getCard()
-        gameCards.add(finalCard)
+        Card finalCard = parentGame.deck.getCard()
+        roundCards.add(finalCard)
 
-        players.each { Player player ->
+        parentGame.players.each { Player player ->
             //Add final card to player hand
             player.addGameCards(finalCard)
 

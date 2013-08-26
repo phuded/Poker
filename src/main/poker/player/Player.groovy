@@ -16,13 +16,17 @@ class Player {
     // First 2 cards
     List<Card> initialCards = []
 
-    // First 2 plus all game cards (up to 7)
+    // First 2 plus all parentGame cards (up to 7)
     List<Card> allCards = []
     List<Hand> hands
     Hand bestHand
 
-    def Player(String name){
+    //Funds
+    int funds
+
+    def Player(String name, int startingFunds){
         this.name = name
+        this.funds = startingFunds
     }
 
     //Get dealt card
@@ -48,6 +52,13 @@ class Player {
     @Override
     String toString(){
        this.name
+    }
+
+    def reset(){
+        this.initialCards = []
+        this.allCards = []
+        this.hands = null
+        this.bestHand = null
     }
 
 }

@@ -15,23 +15,40 @@ class Game {
     Deck deck
     List<Player> players
     List<Round> rounds
+    int tempRoundLimit = 2;
 
-    Game(){
-        players = []
-        rounds = []
-        //Create players and new deck
-        players << new Player ("Matt")
-        players << new Player ("Cathy")
-        players << new Player ("Becky")
-        players << new Player ("Ella")
-        deck = new Deck()
+    Game(List<String> playerNames, int startingPlayerFunds){
+        this.players = []
+        this.rounds = []
+
+        //Create players
+        createPlayers(playerNames,startingPlayerFunds)
+    }
+
+    def createPlayers(List<String> playerNames,int startingPlayerFunds){
+       for (String name: playerNames){
+           players << new Player(name,startingPlayerFunds)
+       }
     }
 
     def startGame(){
-        println "MAIN: Starting game with: "+ players
+        println "MAIN: Starting parentGame with: "+ players
 
-        Round round = new Round(players, deck)
+        Round round = new Round(this)
         round.playRound()
-        rounds << round
+    }
+
+    def nextRound(Round finishedRound){
+
+        rounds << finishedRound
+
+        if(rounds.size() < tempRoundLimit){
+            //Reset players cards and hands
+            players*.reset()
+
+            //New round and play
+            Round round = new Round(this)
+            round.playRound()
+        }
     }
 }

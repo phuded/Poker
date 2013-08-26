@@ -15,6 +15,7 @@ class Deck {
     def cards = []
 
     def Deck(){
+        // Make the deck
         makeDeck()
     }
 
