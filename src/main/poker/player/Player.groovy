@@ -2,6 +2,7 @@ package main.poker.player
 
 import main.poker.card.Card
 import main.poker.hand.Hand
+import main.poker.main.Main
 import main.poker.util.HandDetector
 
 /**
@@ -24,9 +25,14 @@ class Player {
     //Funds
     int funds
 
-    def Player(String name, int startingFunds){
-        this.name = name
-        this.funds = startingFunds
+    def Player(String playerName, int startingFunds){
+        name = playerName
+        funds = startingFunds
+    }
+
+    def Player(String playerName){
+        name = playerName
+        funds = Main.startingPlayerFunds
     }
 
     //Get dealt card
