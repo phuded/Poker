@@ -15,6 +15,8 @@ class Game {
     Deck deck
     List<Player> players
     List<Round> rounds
+
+    //TEMP -> TO REMOVE
     int tempRoundLimit = 2;
 
     Game(List<String> playerNames, int startingPlayerFunds){
