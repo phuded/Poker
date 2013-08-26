@@ -34,12 +34,13 @@ class Game {
     }
 
     def startGame(){
-        println "MAIN: Starting parentGame with: "+ players
+        println "MAIN: Starting new game with: "+ players
 
         Round round = new Round(this)
         round.playRound()
     }
 
+    // Player next round
     def nextRound(Round finishedRound){
 
         rounds << finishedRound

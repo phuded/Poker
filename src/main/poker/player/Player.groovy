@@ -38,6 +38,7 @@ class Player {
     //Get dealt card
     def receiveCard(Card card){
         initialCards.push(card)
+        //Add to all players possible cards too
         allCards.push(card)
     }
 

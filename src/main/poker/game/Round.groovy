@@ -1,6 +1,11 @@
 package main.poker.game
 
 import main.poker.card.Card
+import main.poker.game.round.BettingRound
+import main.poker.game.round.FirstRound
+import main.poker.game.round.FlopRound
+import main.poker.game.round.RiverCardRound
+import main.poker.game.round.TurnCardRound
 import main.poker.player.Player
 import main.poker.util.RoundWinnerDetector
 
@@ -39,25 +44,56 @@ class Round {
         println "MAIN: New round - " + (parentGame.rounds.size() + 1)
         println "================================"
 
-        parentGame.players.each { Player player ->
-            //Player gets two cards
-            dealCardsToPlayer(player)
-        }
+        //Initial deals and betting
+        dealCardsToPlayers()
 
         //Add other cards
         dealFlop()
 
+        dealTurnCard()
+
+        dealRiverCard()
+
+        //Detect winners
+        detectWinners()
+
+        //Finish and play next round
+        parentGame.nextRound(this)
+    }
+
+    //Deal player cards
+    def dealCardsToPlayers(){
+        FirstRound firstRound = new FirstRound(this)
+        firstRound.dealCards()
+    }
+
+    //Deal flop
+    def dealFlop(){
+        BettingRound flopRound = new FlopRound(this)
+        flopRound.dealCards()
+
         println "================================"
+    }
 
-        dealRiver()
-        dealFinal()
+    //Deal river parentGame card
+    def dealTurnCard(){
+        TurnCardRound turnCardRound = new TurnCardRound(this)
+        turnCardRound.dealCards()
+    }
 
+    //Deal final parentGame card
+    def dealRiverCard(){
+        RiverCardRound riverCardRound = new RiverCardRound(this)
+        riverCardRound.dealCards()
+    }
+
+    def detectWinners(){
         println "================================"
 
         //Detect hands...
         parentGame.players.each{ Player player ->
             player.detectHand()
-           // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
+            // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
             println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
         }
 
@@ -67,54 +103,6 @@ class Round {
         winners = RoundWinnerDetector.detectWinners(parentGame.players)
 
         println "MAIN: Winners: " + winners
-
-        //Finish and play next round
-        parentGame.nextRound(this)
     }
 
-    // Deal 1st two cards to player
-    def dealCardsToPlayer(Player player){
-        player.receiveCard(parentGame.deck.getCard())
-        player.receiveCard(parentGame.deck.getCard())
-    }
-
-    //Deal flop
-    def dealFlop(){
-
-        List<Card> flop = parentGame.deck.getFlop()
-        roundCards.addAll(flop)
-
-        parentGame.players.each { Player player ->
-            //Add flop to player hand
-            player.addGameCards(flop)
-
-            println "MAIN: " + player.name + " - Hand after flop: " + player.allCards
-        }
-    }
-
-    //Deal river parentGame card
-    def dealRiver(){
-        Card river = parentGame.deck.getCard()
-        roundCards.add(river)
-
-        parentGame.players.each { Player player ->
-            //Add river card to player hand
-            player.addGameCards(river)
-
-           // println "MAIN: Player: " + player.name + " hand after river: " + player.allCards
-        }
-    }
-
-    //Deal final parentGame card
-    def dealFinal(){
-        Card finalCard = parentGame.deck.getCard()
-        roundCards.add(finalCard)
-
-        parentGame.players.each { Player player ->
-            //Add final card to player hand
-            player.addGameCards(finalCard)
-
-            println "MAIN: " + player.name + " - After All cards: " + player.allCards
-        }
-    }
 }
