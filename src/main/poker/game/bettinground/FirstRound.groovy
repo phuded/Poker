@@ -1,7 +1,6 @@
-package main.poker.game.round
+package main.poker.game.bettinground
 
-import main.poker.game.Game
-import main.poker.game.Round
+import main.poker.game.round.Round
 import main.poker.player.Player
 
 /**
@@ -15,14 +14,15 @@ class FirstRound extends BettingRound{
 
     def FirstRound(Round round){
         parentRound = round
+        currentBet = 0
+        firstCycle = true
     }
 
     @Override
     def dealCards() {
-        Game parentGame = parentRound.parentGame
 
         //Deal 2 cards to each player
-        parentGame.players.each { Player player ->
+        parentRound.roundPlayers.each { Player player ->
             //Player gets two cards
             dealInitialCardsToPlayer(player)
         }

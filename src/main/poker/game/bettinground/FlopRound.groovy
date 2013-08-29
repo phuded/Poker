@@ -1,8 +1,7 @@
-package main.poker.game.round
+package main.poker.game.bettinground
 
 import main.poker.card.Card
-import main.poker.game.Game
-import main.poker.game.Round
+import main.poker.game.round.Round
 import main.poker.player.Player
 
 /**
@@ -20,14 +19,12 @@ class FlopRound extends BettingRound{
 
     @Override
     def dealCards() {
-        Game parentGame = parentRound.parentGame
-
         //Remove flop from deck and add the round cards
-        List<Card> flop = parentGame.deck.getFlop()
+        List<Card> flop = parentRound.parentGame.deck.getFlop()
         parentRound.roundCards.addAll(flop)
 
         //Add flop to each player's hands
-        parentGame.players.each { Player player ->
+        parentRound.roundPlayers.each { Player player ->
             //Add flop to player hand
             player.addGameCards(flop)
 

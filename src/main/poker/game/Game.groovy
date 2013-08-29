@@ -1,8 +1,8 @@
 package main.poker.game
 
-
+import main.poker.card.Deck
+import main.poker.game.round.Round
 import main.poker.player.Player
-import main.poker.util.HandDetector
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +16,7 @@ class Game {
     List<Player> players
     List<Round> rounds
 
-    //TEMP -> TO REMOVE
+    //TEMP -> TO DO REMOVE
     int tempRoundLimit = 2;
 
     Game(List<String> playerNames, int startingPlayerFunds){
@@ -40,14 +40,14 @@ class Game {
         round.playRound()
     }
 
-    // Player next round
+    // Play next round
     def nextRound(Round finishedRound){
 
         rounds << finishedRound
 
         if(rounds.size() < tempRoundLimit){
             //Reset players cards and hands
-            players*.reset()
+            players*.resetBetweenRounds()
 
             //New round and play
             Round round = new Round(this)

@@ -1,12 +1,15 @@
-package main.poker.game
+package main.poker.game.round
 
 import main.poker.card.Card
-import main.poker.game.round.BettingRound
-import main.poker.game.round.FirstRound
-import main.poker.game.round.FlopRound
-import main.poker.game.round.RiverCardRound
-import main.poker.game.round.TurnCardRound
+import main.poker.card.Deck
+import main.poker.game.Game
+import main.poker.game.bettinground.BettingRound
+import main.poker.game.bettinground.FirstRound
+import main.poker.game.bettinground.FlopRound
+import main.poker.game.bettinground.RiverCardRound
+import main.poker.game.bettinground.TurnCardRound
 import main.poker.player.Player
+
 import main.poker.util.RoundWinnerDetector
 
 /**
@@ -23,8 +26,14 @@ class Round {
     // Up for 5 cards
     List<Card> roundCards
 
+    //Players in round
+    List<Player> roundPlayers
+
     //Winners
     List<Player> winners
+
+    //Pot
+    int pot
 
     def Round(Game game){
         //Link to parent parentGame
@@ -34,14 +43,18 @@ class Round {
         parentGame.deck = new Deck()
         parentGame.deck.shuffle()
 
-        //Prepare parentGame cards
+        //Add players to round
+        roundPlayers = []
+        roundPlayers.addAll(game.players)
+
+        //Prepare round cards
         roundCards = []
     }
 
     def playRound(){
 
         println "================================"
-        println "MAIN: New round - " + (parentGame.rounds.size() + 1)
+        println "MAIN: New Round - " + (parentGame.rounds.size() + 1)
         println "================================"
 
         //Initial deals and betting
@@ -50,12 +63,16 @@ class Round {
         //Add other cards
         dealFlop()
 
+        //Turn Card
         dealTurnCard()
 
+        //River card
         dealRiverCard()
 
         //Detect winners
         detectWinners()
+
+        //TO DO - Add winnings to winners!
 
         //Finish and play next round
         parentGame.nextRound(this)
@@ -65,6 +82,14 @@ class Round {
     def dealCardsToPlayers(){
         FirstRound firstRound = new FirstRound(this)
         firstRound.dealCards()
+        firstRound.beginBetting()
+
+        //Get pot
+        pot += firstRound.getPot()
+        println "POT:" + pot
+
+        //Reset
+        roundPlayers*.resetBetweenBettingRounds()
     }
 
     //Deal flop
@@ -92,9 +117,12 @@ class Round {
 
         //Detect hands...
         parentGame.players.each{ Player player ->
-            player.detectHand()
-            // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
-            println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
+            //TO DO: Check if folded - should be removed?
+            //if(!player.hasFolded) {
+                player.detectHand()
+                // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
+                println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
+          //  }
         }
 
         println "================================"

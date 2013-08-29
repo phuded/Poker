@@ -1,4 +1,4 @@
-package main.poker.game
+package main.poker.card
 
 import main.poker.card.Card
 import main.poker.card.CardValue

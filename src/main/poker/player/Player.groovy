@@ -25,14 +25,23 @@ class Player {
     //Funds
     int funds
 
+    //Round specific
+    boolean hasFolded
+    int amountBet
+
+
     def Player(String playerName, int startingFunds){
         name = playerName
         funds = startingFunds
+        hasFolded = false
+        amountBet = 0
     }
 
     def Player(String playerName){
         name = playerName
         funds = Main.startingPlayerFunds
+        hasFolded = false
+        amountBet = 0
     }
 
     //Get dealt card
@@ -51,21 +60,35 @@ class Player {
         allCards.addAll(cards)
     }
 
+    //Bet
+    def makeBet(int newCurrentBet){
+        int amountToCall = newCurrentBet - amountBet
+        funds -= amountToCall
+        amountBet = newCurrentBet
+    }
+
+    //Get hand
     def detectHand(){
         hands = HandDetector.detect(allCards)
         bestHand = hands.last()
     }
 
-    @Override
-    String toString(){
-       this.name
-    }
-
-    def reset(){
+    def resetBetweenRounds(){
         this.initialCards = []
         this.allCards = []
         this.hands = null
         this.bestHand = null
+        this.hasFolded = false
+        this.amountBet = 0
+    }
+
+    def resetBetweenBettingRounds(){
+        this.amountBet = 0
+    }
+
+    @Override
+    String toString(){
+        this.name
     }
 
 }

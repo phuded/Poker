@@ -1,8 +1,7 @@
-package main.poker.game.round
+package main.poker.game.bettinground
 
 import main.poker.card.Card
-import main.poker.game.Game
-import main.poker.game.Round
+import main.poker.game.round.Round
 import main.poker.player.Player
 
 /**
@@ -20,14 +19,12 @@ class RiverCardRound extends BettingRound{
 
     @Override
     def dealCards() {
-        Game parentGame = parentRound.parentGame
-
         // Remove river card from deck and add to round cards
-        Card finalCard = parentGame.deck.getCard()
+        Card finalCard = parentRound.parentGame.deck.getCard()
         parentRound.roundCards.add(finalCard)
 
         //Add to each players hand
-        parentGame.players.each { Player player ->
+        parentRound.roundPlayers.each { Player player ->
             //Add river card to player hand
             player.addGameCards(finalCard)
             println "MAIN: " + player.name + " - After river card: " + player.allCards
