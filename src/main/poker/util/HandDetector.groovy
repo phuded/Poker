@@ -79,9 +79,6 @@ class HandDetector {
         }
     }
 
-    /*
-        TO DO: Support Ace as low in straight
-     */
     static detectStraight(List <Card> cards, List<Hand> hands){
         boolean straight = false
 

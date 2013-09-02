@@ -73,6 +73,7 @@ class Player {
         bestHand = hands.last()
     }
 
+    //Reset player between Poker Rounds
     def resetBetweenRounds(){
         this.initialCards = []
         this.allCards = []
@@ -82,6 +83,7 @@ class Player {
         this.amountBet = 0
     }
 
+    //Reset player between betting rounds
     def resetBetweenBettingRounds(){
         this.amountBet = 0
     }

@@ -13,8 +13,8 @@ import main.poker.player.Player
  */
 class FlopRound extends BettingRound{
 
-    def FlopRound(Round round){
-        parentRound = round
+    FlopRound(Round round){
+        super(round)
     }
 
     @Override

@@ -13,15 +13,23 @@ import main.poker.player.Player
 abstract class BettingRound {
 
     Round parentRound
+
+    //Current bet in betting round
     def currentBet
     boolean firstCycle
+
+    BettingRound(Round round){
+        parentRound = round
+        currentBet = 0
+        firstCycle = true
+    }
 
     abstract dealCards()
 
     def beginBetting(){
 
-        //Do this while all the players are not check or not folded
-        while(checkPlayers(parentRound.roundPlayers)){
+        //Do this while all the active players are not checked
+        while(checkAllBetsComplete(parentRound.roundPlayers)){
 
             parentRound.roundPlayers.each{ Player player ->
 
@@ -38,12 +46,11 @@ abstract class BettingRound {
                 //Next player
                 else{
 
-                    if(currentBet == player.amountBet){
+                    if(player.amountBet == currentBet){
                         //Nothing
                     }
                     else{
                         //Give player options..
-
                         print player.name + " - fold (f), call (c) or specify amount to raise (Current bet: " + currentBet + "):"
                         BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
                         def betAmount = br.readLine()
@@ -70,17 +77,23 @@ abstract class BettingRound {
         }
     }
 
-    // TO DO - REMOVE PLAYERS IF FOLDED
-    def checkPlayers(List<Player> players){
+    //Check if all players match the current bet or have folded
+    def checkAllBetsComplete(List<Player> players){
+
+        //Workaround to ensure evaluates to 'true' on first pass
         if(firstCycle){
             firstCycle = false
             return true
         }
 
+        //Remove folded players
+        players.removeAll{it.hasFolded}
+
         // Do not keep betting
         boolean continueBetting = false
         players.each{ Player player ->
-            if(!player.hasFolded && player.amountBet != currentBet){
+
+            if(player.amountBet != currentBet){
                 //Must continue betting
                 continueBetting = true
             }
@@ -90,13 +103,13 @@ abstract class BettingRound {
     }
 
 
-
+    // Get the total pot from the betting round - include folded players (use game players)
     def getPot(){
         int roundPot = 0
-        parentRound.roundPlayers.each{Player player ->
+        //All players (current and folded)
+        parentRound.parentGame.players.each{Player player ->
             roundPot += player.amountBet
         }
-
         return roundPot
     }
 }

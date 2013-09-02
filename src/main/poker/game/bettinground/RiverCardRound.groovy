@@ -13,8 +13,8 @@ import main.poker.player.Player
  */
 class RiverCardRound extends BettingRound{
 
-    def RiverCardRound(Round round){
-        parentRound = round
+    RiverCardRound(Round round){
+        super(round)
     }
 
     @Override

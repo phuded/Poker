@@ -51,23 +51,14 @@ class Round {
         roundCards = []
     }
 
-    def playRound(){
+    def play(){
 
         println "================================"
         println "MAIN: New Round - " + (parentGame.rounds.size() + 1)
         println "================================"
 
-        //Initial deals and betting
-        dealCardsToPlayers()
-
-        //Add other cards
-        dealFlop()
-
-        //Turn Card
-        dealTurnCard()
-
-        //River card
-        dealRiverCard()
+        //Player betting rounds
+        playBettingRounds()
 
         //Detect winners
         detectWinners()
@@ -78,57 +69,57 @@ class Round {
         parentGame.nextRound(this)
     }
 
-    //Deal player cards
-    def dealCardsToPlayers(){
-        FirstRound firstRound = new FirstRound(this)
-        firstRound.dealCards()
-        firstRound.beginBetting()
+     def playBettingRounds(){
+         List<BettingRound> bettingRounds = [new FirstRound(this),new FlopRound(this),new TurnCardRound(this), new RiverCardRound(this)]
 
-        //Get pot
-        pot += firstRound.getPot()
-        println "POT:" + pot
+         for(int roundNum = 0; roundNum< bettingRounds.size(); roundNum++){
+             BettingRound currentRound = bettingRounds[roundNum]
+             currentRound.dealCards()
+             currentRound.beginBetting()
 
-        //Reset
-        roundPlayers*.resetBetweenBettingRounds()
+             //Finish round - and check if only 1 player remains
+             if(completeBettingRound(currentRound)){
+                 //Finish whole round
+                 break
+             }
+         }
+     }
+
+    //Complete the betting round
+    boolean completeBettingRound(BettingRound round){
+        int bettingRoundPot = round.getPot()
+        pot += bettingRoundPot
+
+        println "Betting round pot: " + bettingRoundPot + ". Total: " + pot
+
+        //Reset ALL players after betting round
+        parentGame.players*.resetBetweenBettingRounds()
+
+        return (roundPlayers.size()>1)?false:true
     }
 
-    //Deal flop
-    def dealFlop(){
-        BettingRound flopRound = new FlopRound(this)
-        flopRound.dealCards()
-
-        println "================================"
-    }
-
-    //Deal river parentGame card
-    def dealTurnCard(){
-        TurnCardRound turnCardRound = new TurnCardRound(this)
-        turnCardRound.dealCards()
-    }
-
-    //Deal final parentGame card
-    def dealRiverCard(){
-        RiverCardRound riverCardRound = new RiverCardRound(this)
-        riverCardRound.dealCards()
-    }
-
+    //Detect the round winner(s)
     def detectWinners(){
-        println "================================"
 
-        //Detect hands...
-        parentGame.players.each{ Player player ->
-            //TO DO: Check if folded - should be removed?
-            //if(!player.hasFolded) {
+        if(roundPlayers.size() > 1){
+            println "================================"
+
+            //Detect hands...
+            roundPlayers.each{ Player player ->
                 player.detectHand()
                 // println "MAIN: "+ player.name + " - All hand-results: " + player.hands
                 println "MAIN: "+ player.name + " - Best hand: " + player.bestHand
-          //  }
+
+            }
+
+            println "================================"
+
+            //Get winner
+            winners = RoundWinnerDetector.detectWinners(roundPlayers)
         }
-
-        println "================================"
-
-        //Get winner
-        winners = RoundWinnerDetector.detectWinners(parentGame.players)
+        else{
+            winners =  [roundPlayers.first()]
+        }
 
         println "MAIN: Winners: " + winners
     }

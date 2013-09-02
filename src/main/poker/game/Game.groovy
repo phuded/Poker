@@ -17,7 +17,7 @@ class Game {
     List<Round> rounds
 
     //TEMP -> TO DO REMOVE
-    int tempRoundLimit = 2;
+    int tempRoundLimit = 1;
 
     Game(List<String> playerNames, int startingPlayerFunds){
         this.players = []
@@ -33,11 +33,11 @@ class Game {
        }
     }
 
-    def startGame(){
+    def play(){
         println "MAIN: Starting new game with: "+ players
 
         Round round = new Round(this)
-        round.playRound()
+        round.play()
     }
 
     // Play next round
@@ -51,7 +51,7 @@ class Game {
 
             //New round and play
             Round round = new Round(this)
-            round.playRound()
+            round.play()
         }
     }
 }

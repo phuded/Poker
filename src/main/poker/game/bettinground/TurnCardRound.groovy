@@ -13,8 +13,8 @@ import main.poker.player.Player
  */
 class TurnCardRound extends BettingRound{
 
-    def TurnCardRound(Round round){
-        parentRound = round
+    TurnCardRound(Round round){
+        super(round)
     }
 
     @Override
@@ -27,7 +27,7 @@ class TurnCardRound extends BettingRound{
         parentRound.roundPlayers.each { Player player ->
             //Add river card to player hand
             player.addGameCards(turnCard)
-            // println "MAIN: Player: " + player.name + " hand after turn card: " + player.allCards
+            println "MAIN: Player: " + player.name + " hand after turn card: " + player.allCards
         }
     }
 }

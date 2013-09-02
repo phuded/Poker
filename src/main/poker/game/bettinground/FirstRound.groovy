@@ -12,10 +12,9 @@ import main.poker.player.Player
  */
 class FirstRound extends BettingRound{
 
-    def FirstRound(Round round){
-        parentRound = round
-        currentBet = 0
-        firstCycle = true
+
+    FirstRound(Round round) {
+        super(round)
     }
 
     @Override
@@ -25,6 +24,8 @@ class FirstRound extends BettingRound{
         parentRound.roundPlayers.each { Player player ->
             //Player gets two cards
             dealInitialCardsToPlayer(player)
+
+            println "MAIN: " + player.name + " - Hand after first deal: " + player.allCards
         }
     }
 
