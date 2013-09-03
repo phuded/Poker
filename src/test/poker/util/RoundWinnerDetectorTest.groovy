@@ -3,6 +3,7 @@ package test.poker.util
 import main.poker.card.Card
 import main.poker.card.CardValue
 import main.poker.card.Suit
+import main.poker.hand.HandType
 import main.poker.player.Player
 import main.poker.util.RoundWinnerDetector
 
@@ -225,4 +226,38 @@ class RoundWinnerDetectorTest extends GroovyTestCase {
         println "================================"
     }
 
+    void testFourOfAKindFromFullHouse() {
+
+        List<Card> gameCards = []
+        gameCards << new Card(CardValue.TWO,Suit.HEARTS)
+        gameCards << new Card(CardValue.TWO,Suit.DIAMONDS)
+        gameCards << new Card(CardValue.TWO,Suit.HEARTS)
+        gameCards << new Card(CardValue.FIVE,Suit.DIAMONDS)
+        gameCards << new Card(CardValue.FIVE,Suit.DIAMONDS)
+
+        Player player1 = new Player("Player 1")
+        player1.receiveCard(new Card(CardValue.FIVE,Suit.CLUBS))
+        player1.receiveCard(new Card(CardValue.FOUR,Suit.SPADES))
+
+        player1.addGameCards(gameCards)
+
+        Player player2 = new Player("Player 2")
+        player2.receiveCard(new Card(CardValue.TWO,Suit.CLUBS))
+        player2.receiveCard(new Card(CardValue.SIX,Suit.SPADES))
+
+        player2.addGameCards(gameCards)
+
+        List<Player> players = [player1,player2]
+
+        players.each{ Player player ->
+            player.detectHand()
+            println "testFourOfAKindFromFullHouse: "+ player.name + " - Best hand: " + player.bestHand
+        }
+
+        List <Player> winners = RoundWinnerDetector.detectWinners(players)
+        println "testFourOfAKindFromFullHouse: Winners: " + winners
+
+        assert winners.size() == 1 && winners.first().name == "Player 2" && winners.first().bestHand.handType == HandType.FOUR_OF_A_KIND
+        println "================================"
+    }
 }
